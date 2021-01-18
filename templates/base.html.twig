@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>
+			{% block title %}Welcome!
+			{% endblock %}
+		</title>
+		{% block stylesheets %}
+
+			{{ encore_entry_link_tags("app") }}	
+		{% endblock %}
+	</head>
+	<body>
+		<div class="container">
+			<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+				<a class="navbar-brand" href="#">Navbar</a>
+				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+
+				<div class="collapse navbar-collapse" id="navbarSupportedContent">
+					<ul class="navbar-nav mr-auto">
+						<li class="nav-item active">
+							<a class="nav-link" href="{{path("accueil")}}">Accueil
+								<span class="sr-only">(current)</span>
+							</a>
+						</li>
+						
+						<li class="nav-item dropdown">
+							<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								Test
+							</a>
+							<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+								<a class="dropdown-item" href="{{path("test_affichage")}}">Affichage</a>
+								<a class="dropdown-item" href="{{path("test_affichage_objet")}}">Affichage d'un objet</a>
+								<div class="dropdown-divider"></div>
+								<a class="dropdown-item" href="#">Something else here</a>
+							</div>
+						</li>
+						{% if is_granted("ROLE_ADMIN") %}
+						<li class="nav-item dropdown">
+							<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								Livre
+							</a>
+							<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+								<a class="dropdown-item" href="{{path("livre_ajouter")}}">Ajouter</a>
+								<a class="dropdown-item" href="{{path("livre")}}">Liste</a>
+								
+							</div>
+						</li>
+						<li class="nav-item dropdown">
+							<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								Abonné
+							</a>
+							<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+								<a class="dropdown-item" href="{{path("abonne_new")}}">Ajouter</a>
+								<a class="dropdown-item" href="{{path("abonne_index")}}">Liste</a>
+								
+							</div>
+						</li>
+						{% endif %}
+						{% if is_granted("IS_AUTHENTICATED_FULLY") %}
+						<li class="nav-item">
+							{# <a class="nav-link" href="#">{{ app.user.pseudo }}</a> #}
+							{<a class="nav-link" href="#">{{ app.user.username }}</a> 
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="{{ path("app_logout") }}">Déconnexion</a>
+						</li>
+						{% else %}
+						<li class="nav-item">
+							<a class="nav-link" href="{{ path("app_login") }}">Connexion</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="{{ path("app_register") }}">Inscription</a>
+						</li>
+						{% endif %}
+						
+					</ul>
+					<form class="form-inline my-2 my-lg-0">
+						<input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+						<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+					</form>
+				</div>
+			</nav>
+
+            {# app est une variable globale de twig qui contient des informations sur l'application (messages, utilisateur connecté...) 
+                app.flashes : est un array qui contient des arrays de messages 
+            #}
+            {% for type, messages in app.flashes %}
+                <div class="alert alert-{{ type }}">
+                    {% for msg in messages %}
+                        {{ msg }}
+                    {% endfor %}
+                </div>
+            {% endfor %}
+
+
+			<h1>
+				{% block h1 %}Bienvenue à la Biblio
+				{% endblock %}
+			</h1>
+			{% block body %}
+                <div class="card-columns">
+                {% for livre in liste_livres %}
+					{{ include("livre/vignette.html.twig") }}
+                {% endfor %}
+				</div>
+			
+			{% endblock %}
+			<footer class="bg-dark text-white mt-5">
+				voici le footer de la page
+			</footer>
+		</div>
+
+		{% block javascripts %}
+            {{ encore_entry_script_tags("app") }}
+        {% endblock %}
+	</body>
+</html>

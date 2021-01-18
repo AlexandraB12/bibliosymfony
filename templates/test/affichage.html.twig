@@ -1,0 +1,55 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+    {# en langage twig, le . sert à accéder à l'indice d'un tableau associatif et aussi à accéder aux propriétés
+    d'un objet (même aux propriétés privées ) #}
+    <p>Le prénom est {{ tab.prenom }}</p>
+    <p>Le nom est {{ tab.nom }}</p>
+    <p>Il a {{ tab.age }}</p>
+    <p>Il habite à {{ tab.ville }}</p>
+
+    {# Il n'y a qu'un seul type de structure conditionnelle : if 
+    {% if condition %}
+    {% elseif condition %}
+    {% else %}
+    {% endif %}
+    
+    En twig, on peut tester les variables avec des TESTS. La syntaxe est la suivante : variable is test
+    (autre : defined, null, empty...)
+    #}
+
+    {% if tab2 is defined %}
+    
+    {# juste pr 1 elt : {{ tab2[0] }} #}
+    {# il n'y a qu'un seul type de structure itérative (boucle) : for 
+        Elle remplace for, while, foreach, do while 
+        FOREACH syntaxe : for valeur in tableau           => foreach($tableau as $valeur)
+                        : for indice, valeur in tableau   => foreach($tableau as $indice => $valeur)
+        FOR             : for i in 0..10                  => for($i=0; $i<=10; $i++)
+        #}
+
+
+    {% for val in tab2 %}
+        {{ val ~ " -"}}
+    {% endfor %}
+
+    <h3>FOR </h3>
+    <table>
+    {% for i in 0..3 %}
+    <tr>
+        <td>{{i}}</td>
+        <td>{{tab2[i]}}</td>
+    </tr>
+    {% endfor %}
+    </table>
+
+    <h3>FOREACH (avec indices)</h3>
+    {% for indice, val in tab2 %}
+    <tr>
+        <td>{{ indice }}</td>
+        <td>{{ val }}</td>
+    </tr>
+    {% endfor %}
+    </table>
+{% endif %}
+{% endblock %}

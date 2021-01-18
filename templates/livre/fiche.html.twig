@@ -1,0 +1,52 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Fiche livre{% endblock %}
+
+{% block h1 %}Fiche du livre{% endblock %}
+
+{% block body %}
+    <ul class="list-group">
+        <li class="list-group-item">
+            <strong>Id : </strong>{{ livre.id }}
+        </li>
+        <li class="list-group-item">
+            <strong>Titre : </strong>{{ livre.titre }}
+        </li>
+        <li class="list-group-item">
+            <strong>Auteur : </strong>{{ livre.auteur }}
+        </li>
+        <li class="list-group-item">
+            <strong>Couverture :</strong>
+            <img src="{{ asset("img/" ~ livre.couverture) }}" alt="pas de couverture">
+        </li>
+        <li class="list-group-item">
+            <table class="table table-bordered">
+                <thead class="thead-dark">
+                        <tr>
+                            <th colspan=2>Emprunts</th>
+                            <th>Nombre d'emprunts : {{ livre.emprunts|length }}</th>
+                        </tr>
+                        <tr>
+                            <th>Abonné</th>
+                            <th>Emprunté le</th>
+                            <th>Rendu le</th>
+                        
+                    </tr>
+            </thead>
+            <tbody>
+            {% for emprunt in livre.emprunts %}
+                <tr>
+                    <td>{{ emprunt.abonne.pseudo }}</td>
+                    <td>{{ emprunt.dateEmprunt|date("d/m/Y") }}</td>
+                    {# si dateRetour est nulle , afficher "à rendre" sinon afficher la date de retour #}
+                    <td>{{ emprunt.dateRetour is empty ? "à rendre" : emprunt.dateRetour|date("d/m/Y") }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+            
+            </table></li>
+        
+        </ul>
+
+
+{% endblock %}
